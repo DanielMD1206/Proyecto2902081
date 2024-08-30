@@ -13,13 +13,14 @@ import SellerView from './pages/seller';
 import Orders from './pages/orders';
 import Products from './pages/prod';
 import UpdateProduct from './pages/updateprod';
-import DeleteProduct from './pages/deletepd';
+import ProductState from './pages/changeProductState';
 import AddProduct from './pages/addprod';
 import Couriers from './pages/domiciliary';
 import UpdateDeliveryPerson from './pages/updatedomi';
 import DeleteCourier from './pages/deletedom';
 import Clients from './pages/crudcli';
 import AddDeliveryPerson from './pages/adddomi';
+import AdminPage from './components/Admin.js'
 
 function App() {
   return (
@@ -38,14 +39,15 @@ function App() {
           <Route path="/seller" element={<SellerView />} />
           <Route path="/orders" element={<Orders />} /> 
           <Route path="/prod" element={<Products />} /> 
-          <Route path="/updateprod" element={<UpdateProduct />} /> 
-          <Route path="/deletepd" element={<DeleteProduct />} /> 
+          <Route path="/updateprod/:id" element={<UpdateProduct />} /> 
+          <Route path="/changeProductState/:id" element={<ProductState />} /> 
           <Route path="/addprod" element={<AddProduct />} /> 
           <Route path="/domiciliary" element={<Couriers />} /> 
           <Route path="/updatedomi" element={<UpdateDeliveryPerson />} />
           <Route path="/deletedom" element={<DeleteCourier />} />
           <Route path="/crudli" element={<Clients />} /> 
           <Route path="/adddomi" element={<AddDeliveryPerson />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
     </div>

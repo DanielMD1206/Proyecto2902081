@@ -4,10 +4,14 @@ import '../index.css';
 import Header from './HeaderR';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -17,120 +21,161 @@ const Register = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  // Validación del formulario con Yup
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Ingrese su nombre'),
+    lastName: Yup.string().required('Ingrese su apellido'),
+    phone: Yup.string().required('Ingrese su teléfono'),
+    email: Yup.string().email('Correo no válido').required('Ingrese su correo'),
+    password: Yup.string().required('Ingrese su contraseña'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir')
+      .required('Confirme su contraseña'),
+    rol: Yup.string().oneOf(['Cliente', 'Administrador', 'Vendedor', 'Domiciliario'], 'Rol no válido').required('Seleccione un rol')
+  });
+
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/register', {
+        nombre_usuario: values.name,
+        apellido_usuario: values.lastName,
+        celular_usuario: values.phone,
+        correo_electronico_usuario: values.email,
+        usuario: values.email,
+        contrasena_usuario: values.password,
+        rol_usuario: values.rol
+      });
+      console.log('Usuario registrado exitosamente:', response.data);
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error.response ? error.response.data : error.message);
+      setError(error.response ? error.response.data.message : error.message); // Actualiza el estado de error si hay un error
+    }
+  };
+
   return (
     <div className="body1">
       <Header />
       <div className="wrapper2">
         <div className="form-box1 login">
           <h2>Crear Cuenta</h2>
-          <form action="#" className="for">
-            <div className="input-box1">
-              <label htmlFor="documentType">Tipo de Documento</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-                <select id="documentType" required>
-                  <option value="">Seleccione el tipo de documento</option>
-                  <option value="CC">Cédula de Ciudadanía</option>
-                  <option value="TI">Tarjeta de Identidad</option>
-                  <option value="CE">Cédula de Extranjería</option>
-                  <option value="PP">Pasaporte</option>
-                </select>
-              </div>
-            </div>
+          {error && <div className="error-message">{error}</div>}
+          <Formik
+            initialValues={{
+              name: '',
+              lastName: '',
+              phone: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+              rol: ''
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ errors, touched }) => (
+              <Form className="for">
+                <div className="input-box1">
+                  <label htmlFor="name">Nombre</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <Field type="text" name="name" id="name" placeholder="Ingrese su nombre aquí:" className={errors.name && touched.name ? 'input-error' : ''} />
+                    <ErrorMessage name="name" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="documentNumber">Número de Documento</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="barcode-outline"></ion-icon></span>
-                <input type="text" id="documentNumber" placeholder="Ingrese su número de documento aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="lastName">Apellido</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <Field type="text" name="lastName" id="lastName" placeholder="Ingrese su apellido aquí:" className={errors.lastName && touched.lastName ? 'input-error' : ''} />
+                    <ErrorMessage name="lastName" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="name">Nombre</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
-                <input type="text" id="name" placeholder="Ingrese su nombre aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="phone">Teléfono</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="call-outline"></ion-icon></span>
+                    <Field type="tel" name="phone" id="phone" placeholder="Ingrese su teléfono aquí:" className={errors.phone && touched.phone ? 'input-error' : ''} />
+                    <ErrorMessage name="phone" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="lastName">Apellido</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
-                <input type="text" id="lastName" placeholder="Ingrese su apellido aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="email">Correo</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                    <Field type="email" name="email" id="email" placeholder="Ingrese su correo aquí:" className={errors.email && touched.email ? 'input-error' : ''} />
+                    <ErrorMessage name="email" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="address">Dirección</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="home-outline"></ion-icon></span>
-                <input type="text" id="address" placeholder="Ingrese su dirección aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="password">Contraseña</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <Field
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      id="password"
+                      placeholder="Ingrese su contraseña aquí:"
+                      className={errors.password && touched.password ? 'input-error' : ''}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                    </button>
+                    <ErrorMessage name="password" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="phone">Teléfono</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="call-outline"></ion-icon></span>
-                <input type="tel" id="phone" placeholder="Ingrese su teléfono aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="confirmPassword">Confirmación de contraseña</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <Field
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      placeholder="Confirme su contraseña aquí:"
+                      className={errors.confirmPassword && touched.confirmPassword ? 'input-error' : ''}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                    </button>
+                    <ErrorMessage name="confirmPassword" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="email">Correo</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="mail-outline"></ion-icon></span>
-                <input type="email" id="email" placeholder="Ingrese su correo aquí:" required />
-              </div>
-            </div>
+                <div className="input-box1">
+                  <label htmlFor="rol">Rol</label>
+                  <div className="input-wrapper2">
+                    <span className="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <Field as="select" name="rol" id="rol" className={errors.rol && touched.rol ? 'input-error' : ''}>
+                      <option value="">Seleccione un rol</option>
+                      <option value="Cliente">Cliente</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Vendedor">Vendedor</option>
+                      <option value="Domiciliario">Domiciliario</option>
+                    </Field>
+                    <ErrorMessage name="rol" component="div" className="error-message" />
+                  </div>
+                </div>
 
-            <div className="input-box1">
-              <label htmlFor="password">Contraseña</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  placeholder="Ingrese su contraseña aquí:"
-                  required
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={togglePasswordVisibility}
-                >
-                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                </button>
-              </div>
-            </div>
-
-            <div className="input-box1">
-              <label htmlFor="confirmPassword">Confirmación de contraseña</label>
-              <div className="input-wrapper2">
-                <span className="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  placeholder="Confirme su contraseña aquí:"
-                  required
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="btn0">Crear Cuenta</button>
-            <div className="login-registerr">
-              <p>¿Ya tiene una cuenta? <Link to="/login" className="login-registerr">Iniciar sesión</Link></p>
-            </div>
-          </form>
+                <button type="submit" className="btn0">Crear Cuenta</button>
+                <div className="login-registerr">
+                  <p>¿Ya tiene una cuenta? <Link to="/login" className="login-registerr">Iniciar sesión</Link></p>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>
