@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../index.css';
 import Header from './HeaderL';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -63,8 +63,10 @@ const Login = () => {
     } catch (error) {
       console.error('Error al iniciar sesión:', error.response ? error.response.data : error.message);
 
-      // Mostrar mensaje de error en la interfaz
-      setError(error.response ? error.response.data.message : 'Correo o contraseña incorrectos.');
+      // Mostrar mensaje de error en la interfaz y alerta
+      const errorMessage = error.response ? error.response.data.message : 'Correo o contraseña incorrectos.';
+      setError(errorMessage);
+      window.alert(errorMessage); // Mostrar alerta
     } finally {
       setSubmitting(false);
     }

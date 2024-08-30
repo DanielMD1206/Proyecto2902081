@@ -31,7 +31,7 @@ const UpdateProduct = () => {
           tipo_producto: product.tipo_producto,
           foto_Producto: product.foto_Producto
         });
-        setImagePreview(product.foto_ProductoURL); // URL de la imagen para vista previa
+        setImagePreview(product.foto_ProductoURL);
       } catch (error) {
         console.error('Error al obtener el producto:', error);
       }

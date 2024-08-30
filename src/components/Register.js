@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../index.css';
 import Header from './HeaderR';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +12,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -46,9 +48,11 @@ const Register = () => {
         rol_usuario: values.rol
       });
       console.log('Usuario registrado exitosamente:', response.data);
+      window.alert('Registro exitoso. Ahora puedes iniciar sesión.'); // Muestra la alerta
+      navigate('/login'); // Redirige al login
     } catch (error) {
       console.error('Error al enviar la solicitud:', error.response ? error.response.data : error.message);
-      setError(error.response ? error.response.data.message : error.message); // Actualiza el estado de error si hay un error
+      setError(error.response ? error.response.data.message : error.message);
     }
   };
 

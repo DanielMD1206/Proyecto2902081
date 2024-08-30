@@ -73,7 +73,7 @@ export default function Header() {
           </div>
           <div className="hidden lg:flex text-[#3C474D] lg:flex-1 lg:justify-end hover:text-[#000] transition ease delay-150">
             <Link
-              to="/registrate"
+              to="/register"
               className="text-sm font-semibold leading-6 tooltip"
               data-tooltip="Registrate"
             >
