@@ -19,7 +19,6 @@ import Couriers from './pages/domiciliary';
 import UpdateDeliveryPerson from './pages/updatedomi';
 import DeleteCourier from './pages/deletedom';
 import Clients from './pages/crudcli';
-import AddDeliveryPerson from './pages/adddomi';
 import AdminPage from './components/Admin.js'
 
 function App() {
@@ -46,7 +45,6 @@ function App() {
           <Route path="/updatedomi" element={<UpdateDeliveryPerson />} />
           <Route path="/deletedom" element={<DeleteCourier />} />
           <Route path="/crudli" element={<Clients />} /> 
-          <Route path="/adddomi" element={<AddDeliveryPerson />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import img from "../static/img/pexels-iriser-1408221 (2).jpg";
 
+// Ejemplo de datos estáticos, reemplaza esto con datos obtenidos de la API.
 const events = [
   {
     id: 1,
@@ -10,62 +11,7 @@ const events = [
     imageSrc: img,
     imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
-  {
-    id: 2,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 3,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 4,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 5,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 6,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 7,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 8,
-    name: "Earthen Bottle",
-    href: "/evento/1",
-    price: "$48",
-    imageSrc: img,
-    imageAlt: "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
+  // Más eventos aquí...
 ];
 
 export default function Eventos() {
@@ -101,7 +47,7 @@ export default function Eventos() {
               <button
                 className="mt-4 w-full text-black bg-gray-50  hover:bg-[#FDABF0] py-2 px-4 rounded-lg transition ease-in-out duration-300"
                 onClick={(e) => {
-                  e.stopPropagation();
+                  e.stopPropagation(); 
                   handleViewDetails(event.id);
                 }}
               >

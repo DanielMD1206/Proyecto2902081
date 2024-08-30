@@ -137,7 +137,7 @@ const Login = () => {
                 <div className="login-registerr">
                   <p>
                     ¿No tiene una cuenta?{' '}
-                    <Link to="/registrate" className="register-link">
+                    <Link to="/register" className="register-link">
                       Registrarse
                     </Link>
                   </p>
